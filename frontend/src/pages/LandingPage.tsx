@@ -109,7 +109,7 @@ export default function LandingPage() {
           --gold: #C9A84C;
           --gold-light: #E8C97A;
           --white: #F0EAE0;
-          --muted: #5a3a3a;
+          --muted: #a38787;
           --surface: #0d0505;
           --glass: rgba(139,26,26,0.08);
           --glass-border: rgba(180,50,50,0.18);
@@ -294,8 +294,8 @@ export default function LandingPage() {
           background: linear-gradient(135deg, var(--white) 0%, rgba(240,180,180,0.7) 100%);
           -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .landing-page-root .m-unit { font-size: 18px; background: linear-gradient(135deg, var(--maroon-bright), var(--maroon-mid)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .landing-page-root .m-label { font-size: 11px; color: var(--muted); margin-top: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+        .landing-page-root .m-unit { font-size: 18px; background: linear-gradient(135deg, var(--maroon-glow), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .landing-page-root .m-label { font-size: 11px; color: rgba(240,234,224,0.65); margin-top: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
 
         .landing-page-root .features {
           display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
