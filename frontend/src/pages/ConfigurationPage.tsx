@@ -134,20 +134,20 @@ export default function ConfigurationPage() {
                   className={cn(
                     'cursor-pointer rounded-sm p-4 transition-all duration-300 border relative overflow-hidden',
                     isSelected 
-                      ? 'bg-primary-500/10 border-primary-500/50 shadow-[0_0_20px_rgba(124,58,237,0.15)]' 
+                      ? 'bg-[rgba(185,28,28,0.1)] border-[rgba(201,168,76,0.5)] shadow-[0_0_20px_rgba(201,168,76,0.15)]' 
                       : 'bg-white/5 border-[rgba(139,26,26,0.15)] hover:border-white/20'
                   )}
                 >
                   {isSelected && (
-                    <motion.div layoutId="policy-highlight" className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-transparent pointer-events-none" />
+                    <motion.div layoutId="policy-highlight" className="absolute inset-0 bg-gradient-to-r from-[rgba(201,168,76,0.2)] to-transparent pointer-events-none" />
                   )}
                   <div className="flex items-center justify-between relative z-10">
                     <div>
-                      <h3 className={cn('font-bold tracking-tight', isSelected ? 'text-primary-300' : 'text-white')}>{p.id}</h3>
+                      <h3 className={cn('font-bold tracking-tight', isSelected ? 'text-[#C9A84C]' : 'text-white')}>{p.id}</h3>
                       <p className="text-xs text-textMuted mt-1">{p.desc}</p>
                     </div>
                     {isSelected && (
-                      <div className="h-3 w-3 rounded-full bg-primary-400 shadow-[0_0_10px_rgba(124,58,237,1)]" />
+                      <div className="h-3 w-3 rounded-full bg-[#C9A84C] shadow-[0_0_10px_rgba(201,168,76,0.8)]" />
                     )}
                   </div>
                 </motion.div>
