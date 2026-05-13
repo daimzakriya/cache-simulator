@@ -31,7 +31,7 @@ function pageFooter(doc: jsPDF, page: number, total: number) {
   doc.setFontSize(7);
   doc.setTextColor(...GREY);
   doc.setFont('helvetica', 'normal');
-  doc.text('CacheSim — Cache Memory Simulator  |  Classroom Use Only', MARGIN, y);
+  doc.text('CacheSim - Cache Memory Simulator  |  Classroom Use Only', MARGIN, y);
   doc.text(`Page ${page} of ${total}`, PAGE_W - MARGIN, y, { align: 'right' });
 }
 
@@ -132,7 +132,7 @@ function buildCover(doc: jsPDF, cfg: CacheConfig, res: SimulationResult) {
 
   // KPI boxes
   const y0 = 185;
-  const bw = 40, bh = 28, gap = 4;
+  const bw = 34, bh = 28, gap = 3;
   const startX = MARGIN;
   const hitRatePct = (res.metrics.hitRate * 100).toFixed(1) + '%';
 
@@ -145,7 +145,7 @@ function buildCover(doc: jsPDF, cfg: CacheConfig, res: SimulationResult) {
   // policy blurb
   const blurbs: Record<string,string> = {
     LRU:  'LRU (Least Recently Used) evicts the block that has not been accessed for the longest time. It exploits temporal locality and is generally the best performer for workloads with a well-defined working set.',
-    FIFO: 'FIFO (First In, First Out) evicts blocks in insertion order. It requires no access tracking per line and suits sequential streaming workloads but suffers from Belady\'s anomaly.',
+    FIFO: "FIFO (First In, First Out) evicts blocks in insertion order. It requires no access tracking per line and suits sequential streaming workloads but suffers from Belady's anomaly.",
     LFU:  'LFU (Least Frequently Used) evicts the block with the fewest total accesses. It works best when a small, highly reused hot-set exists and the rest of the accesses are relatively rare.',
   };
 
@@ -158,7 +158,7 @@ function buildCover(doc: jsPDF, cfg: CacheConfig, res: SimulationResult) {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(...GOLD);
-  doc.text(`Policy Note — ${cfg.policy}`, MARGIN + 4, 225);
+  doc.text(`Policy Note - ${cfg.policy}`, MARGIN + 4, 225);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
@@ -204,9 +204,9 @@ function buildAnalysis(doc: jsPDF, cfg: CacheConfig, res: SimulationResult) {
     startY: y,
     head: [['Field', 'Bits', 'Formula', 'Value']],
     body: [
-      ['Tag',    `${tagBits.toFixed(0)}`,    `32 − index_bits − offset_bits`, `${tagBits.toFixed(0)} bits`],
-      ['Index',  `${indexBits.toFixed(0)}`,  `log₂(num_sets)`,                numSets>1 ? `log₂(${numSets}) = ${indexBits.toFixed(0)}` : '0  (fully associative)'],
-      ['Offset', `${offsetBits.toFixed(0)}`, `log₂(block_size)`,              `log₂(${cfg.blockSizeBytes}) = ${offsetBits.toFixed(0)}`],
+      ['Tag',    `${tagBits.toFixed(0)}`,    `32 - index_bits - offset_bits`, `${tagBits.toFixed(0)} bits`],
+      ['Index',  `${indexBits.toFixed(0)}`,  `log2(num_sets)`,                numSets>1 ? `log2(${numSets}) = ${indexBits.toFixed(0)}` : '0  (fully associative)'],
+      ['Offset', `${offsetBits.toFixed(0)}`, `log2(block_size)`,              `log2(${cfg.blockSizeBytes}) = ${offsetBits.toFixed(0)}`],
     ],
     theme: 'grid',
     styles: { fontSize: 8, textColor: [220,200,200], fillColor: [18,4,4], cellPadding: 2.5 },
@@ -229,11 +229,11 @@ function buildAnalysis(doc: jsPDF, cfg: CacheConfig, res: SimulationResult) {
     body: [
       ['Total Accesses', `${res.metrics.totalAccesses}`, 'All reads issued to the cache'],
       ['Cache Hits',     `${res.metrics.hits}`,          `Blocks found valid in cache`],
-      ['Cache Misses',   `${res.metrics.misses}`,        `Blocks not found — fetched from memory`],
+      ['Cache Misses',   `${res.metrics.misses}`,        `Blocks not found - fetched from memory`],
       ['Hit Rate',       `${(res.metrics.hitRate*100).toFixed(2)}%`, `hits / total_accesses`],
-      ['Miss Rate',      `${(res.metrics.missRate*100).toFixed(2)}%`,`1 − hit_rate`],
-      ['AMAT',           `${res.metrics.amat.toFixed(3)} cycles`,    `hit_time + miss_rate × miss_penalty`],
-      ['CPI (approx.)',  `${res.metrics.cpi.toFixed(3)}`,            `base_cpi + miss_rate × miss_penalty`],
+      ['Miss Rate',      `${(res.metrics.missRate*100).toFixed(2)}%`,`1 - hit_rate`],
+      ['AMAT',           `${res.metrics.amat.toFixed(3)} cycles`,    `hit_time + miss_rate * miss_penalty`],
+      ['CPI (approx.)',  `${res.metrics.cpi.toFixed(3)}`,            `base_cpi + miss_rate * miss_penalty`],
       ['Hit Time',       `${cfg.hitTime} cycles`,         'Configured parameter'],
       ['Miss Penalty',   `${cfg.missPenalty} cycles`,     'Configured parameter'],
     ],
@@ -298,7 +298,7 @@ function buildTrace(doc: jsPDF, res: SimulationResult) {
     `${t.blockOffset}`,
     `${t.way}`,
     t.hit ? 'HIT' : 'MISS',
-    t.evictedTag !== null ? `0x${t.evictedTag.toString(16).toUpperCase()}` : '—',
+    t.evictedTag !== null ? `0x${t.evictedTag.toString(16).toUpperCase()}` : '-',
   ]);
 
   autoTable(doc, {
@@ -351,26 +351,26 @@ function buildGlossary(doc: jsPDF) {
   doc.text('CacheSim Report', PAGE_W - MARGIN, 13, { align: 'right' });
 
   const terms = [
-    ['AMAT', 'Average Memory Access Time. Calculated as: Hit Time + (Miss Rate × Miss Penalty). Measures effective memory latency experienced by the CPU.'],
+    ['AMAT', 'Average Memory Access Time. Calculated as: Hit Time + (Miss Rate * Miss Penalty). Measures effective memory latency experienced by the CPU.'],
     ['Associativity', 'The number of cache lines (ways) per set. 1-way = direct-mapped; all lines in one set = fully associative.'],
     ['Block / Cache Line', 'The unit of data transfer between main memory and cache. Block Size determines how many bytes are fetched on each miss.'],
     ['Block Offset', 'Low-order bits of the address that select a specific byte within the cache block.'],
-    ['CPI', 'Cycles Per Instruction. Estimated as Base CPI + Miss Rate × Miss Penalty.'],
+    ['CPI', 'Cycles Per Instruction. Estimated as Base CPI + Miss Rate * Miss Penalty.'],
     ['Direct-Mapped', 'A cache where each memory block maps to exactly one cache line (1-way associative).'],
     ['FIFO', 'First In, First Out replacement policy. The oldest-inserted block is evicted when a new block must be loaded.'],
     ['Fully Associative', 'A cache with a single set containing all lines. Any block can reside in any line.'],
     ['Hit', 'A memory access where the requested block is already present in the cache.'],
     ['Hit Rate', 'The fraction of total accesses that result in a hit: Hits / Total Accesses.'],
-    ['Hit Time', 'The number of cycles required to complete a cache hit (e.g., 1–4 cycles for L1).'],
-    ['Index Bits', 'Bits extracted from the address used to select the cache set: log₂(number of sets).'],
+    ['Hit Time', 'The number of cycles required to complete a cache hit (e.g., 1-4 cycles for L1).'],
+    ['Index Bits', 'Bits extracted from the address used to select the cache set: log2(number of sets).'],
     ['LFU', 'Least Frequently Used replacement policy. Evicts the block with the lowest access count.'],
     ['LRU', 'Least Recently Used replacement policy. Evicts the block that was accessed furthest in the past.'],
     ['Miss', 'A memory access where the requested block is not in cache; the block must be fetched from main memory.'],
-    ['Miss Penalty', 'Extra cycles incurred on a miss to fetch the block from main memory (typically 50–200 cycles).'],
-    ['Miss Rate', '1 − Hit Rate. The fraction of accesses that miss the cache.'],
+    ['Miss Penalty', 'Extra cycles incurred on a miss to fetch the block from main memory (typically 50-200 cycles).'],
+    ['Miss Rate', '1 - Hit Rate. The fraction of accesses that miss the cache.'],
     ['Set', 'A group of cache lines that a given memory block can be stored in. Number of sets = Total Blocks / Associativity.'],
     ['Tag', 'High-order bits of the address stored in the cache line to identify which memory block occupies it.'],
-    ['Tag Bits', '32 − Index Bits − Offset Bits. Used to verify that a cache line contains the requested block.'],
+    ['Tag Bits', '32 - Index Bits - Offset Bits. Used to verify that a cache line contains the requested block.'],
     ['Way', 'One slot within a set. A k-way set-associative cache has k ways per set.'],
     ['Working Set', 'The set of memory blocks actively used by a program during a phase of execution.'],
   ];
