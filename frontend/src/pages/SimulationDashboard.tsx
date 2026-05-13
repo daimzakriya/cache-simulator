@@ -156,12 +156,12 @@ export default function SimulationDashboard() {
             </div>
 
             {/* Cache Grid Visualizer */}
-            <div className="bg-surfaceElevated rounded-sm border border-[rgba(139,26,26,0.15)] p-4 overflow-x-auto min-h-[300px]">
-              {result.numSets <= 16 ? (
+            <div className="bg-surfaceElevated rounded-sm border border-[rgba(139,26,26,0.15)] p-4 overflow-auto min-h-[300px] max-h-[600px]">
+              {result.numSets <= 128 ? (
                 <div className="flex flex-col gap-2 min-w-max">
                   {Array.from({ length: result.numSets }).map((_, si) => (
                     <div key={si} className="flex items-center gap-4">
-                      <div className="w-12 text-right font-mono text-xs text-textMuted">Set {si}</div>
+                      <div className="w-12 text-right font-mono text-xs text-textMuted flex-shrink-0">Set {si}</div>
                       <div className="flex gap-2">
                         {Array.from({ length: result.associativity }).map((_, wi) => {
                           const snap = currentEvent?.cacheSnapshot.find(s => s.set === si && s.way === wi);
@@ -175,7 +175,7 @@ export default function SimulationDashboard() {
                             }
                           }
                           return (
-                            <div key={wi} className={cn("cache-cell w-16 h-12 relative overflow-hidden", cellClass)}>
+                            <div key={wi} className={cn("cache-cell w-16 h-12 relative overflow-hidden flex-shrink-0", cellClass)}>
                               {snap && <span className="font-bold">{snap.tag !== null ? `0x${snap.tag.toString(16).toUpperCase()}` : ''}</span>}
                               {isActive && <motion.div layoutId="cell-pulse" className="absolute inset-0 bg-white/20 animate-pulse" />}
                             </div>
@@ -186,8 +186,8 @@ export default function SimulationDashboard() {
                   ))}
                 </div>
               ) : (
-                <div className="flex items-center justify-center h-full text-textMuted text-sm">
-                  Cache too large to visualize cell-by-cell ({result.numSets} sets).
+                <div className="flex items-center justify-center h-full min-h-[250px] text-textMuted text-sm">
+                  Cache too large to visualize cell-by-cell ({result.numSets} sets). Limit is 128 sets.
                 </div>
               )}
             </div>

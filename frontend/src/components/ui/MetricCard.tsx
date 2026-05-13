@@ -49,7 +49,7 @@ export function MetricCard({ label, value, icon: Icon, unit, color = 'primary', 
 
   const display = () => {
     if (typeof value === 'string') return value;
-    if (format === 'percent') return `${(animated * 100).toFixed(1)}%`;
+    if (format === 'percent') return `${animated.toFixed(1)}%`;
     if (format === 'fixed2') return animated.toFixed(2);
     if (format === 'fixed3') return animated.toFixed(3);
     return Math.floor(animated).toLocaleString();

@@ -3,8 +3,7 @@ import { Download, FileText, Share2 } from 'lucide-react';
 import { useSimStore } from '../store/useSimStore';
 import { GlassCard } from '../components/ui/GlassCard';
 import { GlowButton } from '../components/ui/GlowButton';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import { generatePDFReport } from '../lib/pdfReport';
 
 export default function ExportPage() {
   const { config, result } = useSimStore();
@@ -32,56 +31,7 @@ export default function ExportPage() {
 
   const handleExportPDF = () => {
     if (!result) return;
-
-    const doc = new jsPDF();
-    
-    // Header
-    doc.setFontSize(22);
-    doc.setTextColor(124, 58, 237); // Primary Violet
-    doc.text("CacheSim: Simulation Report", 14, 20);
-    
-    doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 28);
-
-    // Configuration
-    doc.setFontSize(14);
-    doc.setTextColor(20);
-    doc.text("Configuration", 14, 40);
-    
-    autoTable(doc, {
-      startY: 45,
-      head: [['Parameter', 'Value']],
-      body: [
-        ['Cache Size', `${config.cacheSizeBytes} Bytes`],
-        ['Block Size', `${config.blockSizeBytes} Bytes`],
-        ['Associativity', `${config.associativity} Way`],
-        ['Policy', config.policy],
-      ],
-      theme: 'grid',
-      headStyles: { fillColor: [124, 58, 237] }
-    });
-
-    // Metrics
-    const finalY = (doc as any).lastAutoTable.finalY || 45;
-    doc.setFontSize(14);
-    doc.text("Performance Metrics", 14, finalY + 10);
-    
-    autoTable(doc, {
-      startY: finalY + 15,
-      head: [['Metric', 'Result']],
-      body: [
-        ['Total Accesses', result.metrics.totalAccesses.toString()],
-        ['Hits', result.metrics.hits.toString()],
-        ['Misses', result.metrics.misses.toString()],
-        ['Hit Rate', `${(result.metrics.hitRate * 100).toFixed(2)}%`],
-        ['AMAT', `${result.metrics.amat.toFixed(2)} Cycles`],
-      ],
-      theme: 'grid',
-      headStyles: { fillColor: [6, 182, 212] }
-    });
-
-    doc.save('cachesim_report.pdf');
+    generatePDFReport(config, result);
   };
 
   const [copied, setCopied] = useState(false);
