@@ -16,11 +16,6 @@ const PAGE_H = 297;
 const MARGIN = 14;
 
 // ── Helpers ─────────────────────────────────────────────────────
-function setColor(doc: jsPDF, rgb: [number,number,number], text = true) {
-  if (text) doc.setTextColor(...rgb);
-  else doc.setFillColor(...rgb);
-}
-
 function sectionLabel(doc: jsPDF, text: string, y: number) {
   doc.setFontSize(7);
   doc.setTextColor(...MAROON_B);
